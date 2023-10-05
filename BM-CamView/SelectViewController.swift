@@ -31,6 +31,14 @@ import BluetoothControl
 import CameraControlInterface
 
 class SelectViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, InitialConnectionToUIDelegate {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        <#code#>
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        <#code#>
+    }
+    
 
     // IBOutlets
     @IBOutlet weak var cameraTableView: UITableView!
@@ -98,33 +106,14 @@ class SelectViewController: UIViewController, UITableViewDelegate, UITableViewDa
             if selectedIndex >= 0 {
                 let uuid: UUID = m_bluetoothCameras[selectedIndex].peripheral.getPeripheralIdentifier()
                 m_initialConnectionInterfaceDelegate?.attemptConnection(to: uuid)
-                messageLabel.stringValue = String.Localized("Information.Connecting")
+                messageLabel.text = String.Localized("Information.Connecting")
             }
         }
-        else {
-            let selectedIndex = cameraTableView.selectedRow
-            if selectedIndex >= 0 {
-                m_initialConnectionInterfaceDelegate?.connectToPTPDevice(to: m_usbPtpCameras[selectedIndex])
-            }
+        
         }
     }
 
-    @IBAction func onConnectionTypeRadioButtonClicked(_ sender: UIButton) {
-        if (sender == connectionBluetoothRadioButton) {
-            m_connectionTypeBluetooth = true
-            messageLabel.stringValue = String.Localized("Information.Searching")
-        }
-        else {
-            m_connectionTypeBluetooth = false
-            messageLabel.stringValue = String.Localized("Information.USBConnect")
-        }
-        
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        appDelegate.currentTransportBluetooth = m_connectionTypeBluetooth
-        
-        // Update UI to display our discovered cameras.
-        cameraTableView.reloadData()
-    }
+    
 
     //==================================================
     //    UITableViewDelegate methods
@@ -133,18 +122,14 @@ class SelectViewController: UIViewController, UITableViewDelegate, UITableViewDa
         if (m_connectionTypeBluetooth) {
             return m_bluetoothCameras.count
         }
-        else {
-            return m_usbPtpCameras.count
-        }
+       
     }
 
-    func tableView(_: UITableView, objectValueFor _: UITableColumn?, row: Int) -> Any? {
+    func tableView(_: UITableView, objectValueFor _: UITableViewCell, row: Int) -> Any? {
         if (m_connectionTypeBluetooth) {
             return m_bluetoothCameras[row].name
         }
-        else {
-            return m_usbPtpCameras[row].getName()
-        }
+        
     }
 
     //==================================================
