@@ -6,10 +6,18 @@
 //
 
 import UIKit
+import BluetoothControl
+import CameraControlInterface
+
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
+    
+    // Central state defining current transport protocol
+    var currentTransportBluetooth: Bool = true
 
+    // Central interface for all Bluetooth and CCU communication
+    let cameraControlInterface = CameraControlInterface()
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
